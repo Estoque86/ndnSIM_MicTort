@@ -1,0 +1,57 @@
+
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin10.8.0 (64-bit)
+
+R è un software libero ed è rilasciato SENZA ALCUNA GARANZIA.
+Siamo ben lieti se potrai redistribuirlo, ma sotto certe condizioni.
+Scrivi 'license()' o 'licence()' per dettagli su come distribuirlo.
+
+R è un progetto di collaborazione con molti contributi esterni.
+Scrivi 'contributors()' per maggiori informazioni e 'citation()'
+per sapere come citare R o i pacchetti di R nelle pubblicazioni.
+
+Scrivi 'demo()' per una dimostrazione, 'help()' per la guida in linea, o
+'help.start()' per l'help navigabile con browser HTML.
+Scrivi 'q()' per uscire da R.
+
+[Caricato workspace precedentemente salvato]
+
+> #!/usr/bin/env Rscript
+> # Copyright (c) 2012-2013  Alexander Afanasyev <alexander.afanasyev@ucla.edu>
+> 
+> 
+> # install.packages ('ggplot2')
+> library (ggplot2)
+> ## # install.packages ('scales')
+> ## library (scales)
+> 
+> library (doBy)
+Carico il pacchetto richiesto: survival
+Carico il pacchetto richiesto: splines
+Carico il pacchetto richiesto: MASS
+> 
+> #########################
+> # Rate trace processing #
+> #########################
+> data = read.table ("cs-trace-single-cache.txt", header=T)
+> data$Node = factor (data$Node)
+> data$Type = factor (data$Type)
+> 
+> ## data.rtr = data[grep("Rtr", data$Node),]
+> #data.combined = summaryBy (. ~ Time + Node + Type, data=data, FUN=sum)
+> 
+> # graph rates on all nodes in Kilobits
+> g.all <- ggplot (data, aes (x=Time, y=Packets, color=Type)) +
++   geom_point (size=2) +
++   geom_line () +
++   ylab ("Packets") +
++   theme_bw ()
+> 
+> png ("cs-trace-single-cache.png", width=800, height=500)
+> print (g.all)
+> x = dev.off ()
+> 
+> proc.time()
+   user  system elapsed 
+  4.035   0.095   4.135 

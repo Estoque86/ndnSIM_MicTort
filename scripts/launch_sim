@@ -1,0 +1,1 @@
+./waf --run "scratch/ndn-single-cache-cs-tracers_NEW --catalogCardinality=100000 --cacheToCatalogRatio=0.001 --lambda=3 --alpha=1 --plateau=0 --simType=single_cache --simDuration=1000 --RngSeed=1 --RngRun=1" > single-cache.out 2>&1

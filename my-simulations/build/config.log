@@ -1,0 +1,387 @@
+# project template (0.1) configured on Mon Feb 10 16:12:33 2014 by
+# waf 1.7.9 (abi 98, python 20605f0 on linux2)
+# using ./waf configure --logging
+#
+----------------------------------------
+Setting top to
+/media/DATI/tortelli/ndn-simulators-comparison/ndnSIM/my-simulations
+----------------------------------------
+Setting out to
+/media/DATI/tortelli/ndn-simulators-comparison/ndnSIM/my-simulations/build
+----------------------------------------
+Checking for 'g++' (c++ compiler)
+find program=['g++', 'c++'] paths=['/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin', '/usr/games', '/media/DATI/piro/CCN-TV/omnetpp-4.2.2/bin', '/media/DATI/tortelli/ndn-simulators-comparison/dce-ccnx/bake'] var='CXX' -> '/usr/bin/g++'
+find program=['ar'] paths=['/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin', '/usr/games', '/media/DATI/piro/CCN-TV/omnetpp-4.2.2/bin', '/media/DATI/tortelli/ndn-simulators-comparison/dce-ccnx/bake'] var='AR' -> '/usr/bin/ar'
+/usr/bin/g++
+----------------------------------------
+Checking boost includes
+1_51
+----------------------------------------
+Checking boost libs
+Found the boost path in /usr/local/lib with the libraries:
+    /usr/local/lib/libboost_chrono.a
+    /usr/local/lib/libboost_chrono.so
+    /usr/local/lib/libboost_chrono.so.1.51.0
+    /usr/local/lib/libboost_context.a
+    /usr/local/lib/libboost_context.so
+    /usr/local/lib/libboost_context.so.1.51.0
+    /usr/local/lib/libboost_date_time.a
+    /usr/local/lib/libboost_date_time.so
+    /usr/local/lib/libboost_date_time.so.1.51.0
+    /usr/local/lib/libboost_exception.a
+    /usr/local/lib/libboost_filesystem.a
+    /usr/local/lib/libboost_filesystem.so
+    /usr/local/lib/libboost_filesystem.so.1.51.0
+    /usr/local/lib/libboost_graph.a
+    /usr/local/lib/libboost_graph.so
+    /usr/local/lib/libboost_graph.so.1.51.0
+    /usr/local/lib/libboost_iostreams.a
+    /usr/local/lib/libboost_iostreams.so
+    /usr/local/lib/libboost_iostreams.so.1.51.0
+    /usr/local/lib/libboost_locale.a
+    /usr/local/lib/libboost_locale.so
+    /usr/local/lib/libboost_locale.so.1.51.0
+    /usr/local/lib/libboost_math_c99.a
+    /usr/local/lib/libboost_math_c99.so
+    /usr/local/lib/libboost_math_c99.so.1.51.0
+    /usr/local/lib/libboost_math_c99f.a
+    /usr/local/lib/libboost_math_c99f.so
+    /usr/local/lib/libboost_math_c99f.so.1.51.0
+    /usr/local/lib/libboost_math_c99l.a
+    /usr/local/lib/libboost_math_c99l.so
+    /usr/local/lib/libboost_math_c99l.so.1.51.0
+    /usr/local/lib/libboost_math_tr1.a
+    /usr/local/lib/libboost_math_tr1.so
+    /usr/local/lib/libboost_math_tr1.so.1.51.0
+    /usr/local/lib/libboost_math_tr1f.a
+    /usr/local/lib/libboost_math_tr1f.so
+    /usr/local/lib/libboost_math_tr1f.so.1.51.0
+    /usr/local/lib/libboost_math_tr1l.a
+    /usr/local/lib/libboost_math_tr1l.so
+    /usr/local/lib/libboost_math_tr1l.so.1.51.0
+    /usr/local/lib/libboost_prg_exec_monitor.a
+    /usr/local/lib/libboost_prg_exec_monitor.so
+    /usr/local/lib/libboost_prg_exec_monitor.so.1.51.0
+    /usr/local/lib/libboost_program_options.a
+    /usr/local/lib/libboost_program_options.so
+    /usr/local/lib/libboost_program_options.so.1.51.0
+    /usr/local/lib/libboost_python.a
+    /usr/local/lib/libboost_python.so
+    /usr/local/lib/libboost_python.so.1.51.0
+    /usr/local/lib/libboost_random.a
+    /usr/local/lib/libboost_random.so
+    /usr/local/lib/libboost_random.so.1.51.0
+    /usr/local/lib/libboost_regex.a
+    /usr/local/lib/libboost_regex.so
+    /usr/local/lib/libboost_regex.so.1.51.0
+    /usr/local/lib/libboost_serialization.a
+    /usr/local/lib/libboost_serialization.so
+    /usr/local/lib/libboost_serialization.so.1.51.0
+    /usr/local/lib/libboost_signals.a
+    /usr/local/lib/libboost_signals.so
+    /usr/local/lib/libboost_signals.so.1.51.0
+    /usr/local/lib/libboost_system.a
+    /usr/local/lib/libboost_system.so
+    /usr/local/lib/libboost_system.so.1.51.0
+    /usr/local/lib/libboost_test_exec_monitor.a
+    /usr/local/lib/libboost_thread.a
+    /usr/local/lib/libboost_thread.so
+    /usr/local/lib/libboost_thread.so.1.51.0
+    /usr/local/lib/libboost_timer.a
+    /usr/local/lib/libboost_timer.so
+    /usr/local/lib/libboost_timer.so.1.51.0
+    /usr/local/lib/libboost_unit_test_framework.a
+    /usr/local/lib/libboost_unit_test_framework.so
+    /usr/local/lib/libboost_unit_test_framework.so.1.51.0
+    /usr/local/lib/libboost_wave.a
+    /usr/local/lib/libboost_wave.so
+    /usr/local/lib/libboost_wave.so.1.51.0
+    /usr/local/lib/libboost_wserialization.a
+    /usr/local/lib/libboost_wserialization.so
+    /usr/local/lib/libboost_wserialization.so.1.51.0
+Trying pattern boost_system(-gcc[0-9]{0,3})+(-1_51)+
+Trying pattern boost_system(-1_51)+
+Trying pattern boost_system(-1_51)+
+Trying pattern boost_system(-gcc[0-9]{0,3})+
+Trying pattern boost_system
+Found boost lib libboost_system.a
+Trying pattern boost_iostreams(-gcc[0-9]{0,3})+(-1_51)+
+Trying pattern boost_iostreams(-1_51)+
+Trying pattern boost_iostreams(-1_51)+
+Trying pattern boost_iostreams(-gcc[0-9]{0,3})+
+Trying pattern boost_iostreams
+Found boost lib libboost_iostreams.a
+ok
+----------------------------------------
+Checking for boost linkage
+==>
+#include <boost/system/error_code.hpp>
+int main() { boost::system::error_code c; }
+<==
+[1/2] [32mcxx: build/.conf_check_968fbcee789046a8c143bb4a6e302895/test.cpp -> build/.conf_check_968fbcee789046a8c143bb4a6e302895/testbuild/test.cpp.1.o
+[0m
+['/usr/bin/g++', '-I/usr/local/include', '../test.cpp', '-c', '-o', 'test.cpp.1.o']
+[2/2] [33mcxxprogram: build/.conf_check_968fbcee789046a8c143bb4a6e302895/testbuild/test.cpp.1.o -> build/.conf_check_968fbcee789046a8c143bb4a6e302895/testbuild/testprog
+[0m
+['/usr/bin/g++', 'test.cpp.1.o', '-o', '/media/DATI/tortelli/ndn-simulators-comparison/ndnSIM/my-simulations/build/.conf_check_968fbcee789046a8c143bb4a6e302895/testbuild/testprog', '-Wl,-Bstatic', '-Wl,-Bdynamic', '-L/usr/local/lib', '-lboost_system', '-lboost_iostreams']
+ok
+----------------------------------------
+Checking for program pkg-config
+/usr/bin/pkg-config
+find program=['pkg-config'] paths=['/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin', '/usr/games', '/media/DATI/piro/CCN-TV/omnetpp-4.2.2/bin', '/media/DATI/tortelli/ndn-simulators-comparison/dce-ccnx/bake'] var='PKGCONFIG' -> '/usr/bin/pkg-config'
+------------------------------------------
+Checking for pkg-config version >= '0.0.0'
+['/usr/bin/pkg-config', '--atleast-pkgconfig-version=0.0.0']
+yes
+------------------------------------------
+Checking for ns3-core
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-core-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-network
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-network-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-point-to-point
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-point-to-point-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-point-to-point-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-applications
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-applications-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-applications-optimized -lns3-dev-internet-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-mobility
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-mobility-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-mobility-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-ndnSIM
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-ndnSIM-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-ndnSIM-optimized -lns3-dev-visualizer-optimized -lns3-dev-topology-read-optimized -lns3-dev-internet-optimized -lns3-dev-wifi-optimized -lns3-dev-point-to-point-optimized -lns3-dev-bridge-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-antenna
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-antenna-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-antenna-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-aodv
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-aodv-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-aodv-optimized -lns3-dev-mesh-optimized -lns3-dev-point-to-point-optimized -lns3-dev-virtual-net-device-optimized -lns3-dev-wifi-optimized -lns3-dev-applications-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-internet-optimized -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-bridge
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-bridge-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-bridge-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-brite
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-brite-optimized']
+err: Package libns3-dev-brite-optimized was not found in the pkg-config search path.
+Perhaps you should add the directory containing `libns3-dev-brite-optimized.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'libns3-dev-brite-optimized' found
+
+not found
+from /media/DATI/tortelli/ndn-simulators-comparison/ndnSIM/my-simulations: The configuration failed
+------------------------------------------
+Checking for ns3-buildings
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-buildings-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-buildings-optimized -lns3-dev-propagation-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-mobility-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-click
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-click-optimized']
+err: Package libns3-dev-click-optimized was not found in the pkg-config search path.
+Perhaps you should add the directory containing `libns3-dev-click-optimized.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'libns3-dev-click-optimized' found
+
+not found
+from /media/DATI/tortelli/ndn-simulators-comparison/ndnSIM/my-simulations: The configuration failed
+------------------------------------------
+Checking for ns3-config-store
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-config-store-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-config-store-optimized -lxml2 -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-csma
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-csma-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-csma-optimized -lns3-dev-applications-optimized -lns3-dev-internet-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-csma-layout
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-csma-layout-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-csma-layout-optimized -lns3-dev-netanim-optimized -lns3-dev-wimax-optimized -lns3-dev-lte-optimized -lns3-dev-uan-optimized -lns3-dev-spectrum-optimized -lns3-dev-buildings-optimized -lns3-dev-virtual-net-device-optimized -lns3-dev-point-to-point-optimized -lns3-dev-csma-optimized -lns3-dev-antenna-optimized -lns3-dev-applications-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-energy-optimized -lns3-dev-internet-optimized -lns3-dev-wifi-optimized -lns3-dev-bridge-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-dsdv
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-dsdv-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-dsdv-optimized -lns3-dev-mesh-optimized -lns3-dev-wifi-optimized -lns3-dev-applications-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-internet-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-dsr
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-dsr-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-dsr-optimized -lns3-dev-mesh-optimized -lns3-dev-wifi-optimized -lns3-dev-applications-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-internet-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-emu
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-emu-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-emu-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-energy
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-energy-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-energy-optimized -lns3-dev-internet-optimized -lns3-dev-wifi-optimized -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-fd-net-device
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-fd-net-device-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-fd-net-device-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-flow-monitor
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-flow-monitor-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-flow-monitor-optimized -lns3-dev-internet-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-internet
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-internet-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-internet-optimized -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-lte
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-lte-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-lte-optimized -lns3-dev-spectrum-optimized -lns3-dev-buildings-optimized -lns3-dev-virtual-net-device-optimized -lns3-dev-point-to-point-optimized -lns3-dev-csma-optimized -lns3-dev-antenna-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-applications-optimized -lns3-dev-internet-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-mesh
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-mesh-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-mesh-optimized -lns3-dev-wifi-optimized -lns3-dev-applications-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-internet-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-mpi
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-mpi-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-netanim
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-netanim-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-netanim-optimized -lns3-dev-wimax-optimized -lns3-dev-lte-optimized -lns3-dev-uan-optimized -lns3-dev-spectrum-optimized -lns3-dev-buildings-optimized -lns3-dev-virtual-net-device-optimized -lns3-dev-point-to-point-optimized -lns3-dev-csma-optimized -lns3-dev-antenna-optimized -lns3-dev-applications-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-energy-optimized -lns3-dev-internet-optimized -lns3-dev-wifi-optimized -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-nix-vector-routing
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-nix-vector-routing-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-nix-vector-routing-optimized -lns3-dev-internet-optimized -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-olsr
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-olsr-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-olsr-optimized -lns3-dev-point-to-point-optimized -lns3-dev-wifi-optimized -lns3-dev-csma-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-applications-optimized -lns3-dev-internet-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-openflow
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-openflow-optimized']
+err: Package libns3-dev-openflow-optimized was not found in the pkg-config search path.
+Perhaps you should add the directory containing `libns3-dev-openflow-optimized.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'libns3-dev-openflow-optimized' found
+
+not found
+from /media/DATI/tortelli/ndn-simulators-comparison/ndnSIM/my-simulations: The configuration failed
+------------------------------------------
+Checking for ns3-point-to-point-layout
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-point-to-point-layout-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-point-to-point-layout-optimized -lns3-dev-netanim-optimized -lns3-dev-wimax-optimized -lns3-dev-lte-optimized -lns3-dev-uan-optimized -lns3-dev-spectrum-optimized -lns3-dev-buildings-optimized -lns3-dev-virtual-net-device-optimized -lns3-dev-point-to-point-optimized -lns3-dev-csma-optimized -lns3-dev-antenna-optimized -lns3-dev-applications-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-energy-optimized -lns3-dev-internet-optimized -lns3-dev-wifi-optimized -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-propagation
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-propagation-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-spectrum
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-spectrum-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-spectrum-optimized -lns3-dev-propagation-optimized -lns3-dev-antenna-optimized -lns3-dev-applications-optimized -lns3-dev-mobility-optimized -lns3-dev-internet-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-stats
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-stats-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-tap-bridge
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-tap-bridge-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-tap-bridge-optimized -lns3-dev-internet-optimized -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-topology-read
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-topology-read-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-topology-read-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-uan
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-uan-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-uan-optimized -lns3-dev-energy-optimized -lns3-dev-internet-optimized -lns3-dev-wifi-optimized -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-virtual-net-device
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-virtual-net-device-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-virtual-net-device-optimized -lns3-dev-internet-optimized -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-visualizer
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-visualizer-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-visualizer-optimized -lns3-dev-internet-optimized -lns3-dev-wifi-optimized -lns3-dev-point-to-point-optimized -lns3-dev-bridge-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-mpi-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-wifi
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-wifi-optimized']
+out: -pthread -I/usr/local/include/ns3-dev  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-wifi-optimized -lns3-dev-propagation-optimized -lns3-dev-mobility-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
+------------------------------------------
+Checking for ns3-wimax
+['/usr/bin/pkg-config', '--cflags', '--libs', 'libns3-dev-wimax-optimized']
+out: -pthread -I/usr/local/include/ns3-dev -I/usr/include/libxml2  -Wl,-Bdynamic -L/usr/local/lib -lns3-dev-wimax-optimized -lns3-dev-point-to-point-optimized -lns3-dev-applications-optimized -lns3-dev-propagation-optimized -lns3-dev-internet-optimized -lns3-dev-config-store-optimized -lxml2 -lns3-dev-bridge-optimized -lns3-dev-mpi-optimized -lns3-dev-mobility-optimized -lns3-dev-network-optimized -lns3-dev-stats-optimized -lns3-dev-core-optimized -lrt  
+
+yes
