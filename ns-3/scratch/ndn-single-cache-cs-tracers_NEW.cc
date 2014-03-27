@@ -47,7 +47,7 @@ void HitTrace(Ptr<OutputStreamWrapper> stream, Ptr<const Interest> interest, std
 
 
 int
-main (int argc, char *argv[])
+main (int argc, char *argv[9])
 {
 	uint64_t catalogCardinality = 0;          // Estimated Content Catalog Cardinality.
 	double cacheToCatalogRatio = 0.01;        // Cache to Catalog Ratio per each node.
@@ -56,6 +56,7 @@ main (int argc, char *argv[])
 	double plateau = 0;                       // q parameter for the ZipfMandelbrot distribution
 	std::string simType = "";                 // Simulation Type Description
 	uint32_t simDuration = 100;
+	uint32_t numReqTot = 10000;		  // Total number of requests inside the simulation.
 
     CommandLine cmd;
     cmd.AddValue ("catalogCardinality", "Estimated Content Catalog Cardinality.", catalogCardinality);
@@ -65,10 +66,11 @@ main (int argc, char *argv[])
     cmd.AddValue ("plateau", "q parameter for the ZipfMandelbrot distribution", plateau);
     cmd.AddValue ("simType", "Simulation Type Description", simType);
     cmd.AddValue ("simDuration", "Length of the simulation, in seconds.", simDuration);
+    cmd.AddValue ("numReqTot", "Total number of requests during the simulation", numReqTot);
 
     cmd.Parse (argc, argv);
 
-    std::string catalogCardinalityStr, lambdaStr, alphaStr, plateauStr;
+    std::string catalogCardinalityStr, lambdaStr, alphaStr, plateauStr,reqStr;
     std::stringstream ss;
     ss << catalogCardinality;
     catalogCardinalityStr = ss.str();
@@ -81,6 +83,9 @@ main (int argc, char *argv[])
     ss.str("");
     ss << plateau;
     plateauStr = ss.str();
+    ss.str("");
+    ss << numReqTot;
+    reqStr = numReqTot.str();
     ss.str("");
 
 
@@ -104,7 +109,7 @@ main (int argc, char *argv[])
 
     // **********   Composition of the scenario string   ***********
     std::string scenarioString;
-    ss << "logs/SIM=NDNSIM" << "_T=" << simType << "_M="<< catalogCardinality << "_C=" << cacheToCatalogRatio << "_L=" << lambda << "_A=" << alpha << "_R=" << simRunOut << ".out";
+    ss << "logs/SIM=NDNSIM" << "_T=" << simType << "_REQ=" << numReqTot << "_M="<< catalogCardinality << "_C=" << cacheToCatalogRatio << "_L=" << lambda << "_A=" << alpha << "_R=" << simRunOut << ".out";
     scenarioString = ss.str();
     ss.str("");
 
