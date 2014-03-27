@@ -181,7 +181,7 @@ main (int argc, char *argv[9])
 	// **********   OUTPUT STREAM   ***************
     Ptr<OutputStreamWrapper> streamHit = asciiTraceHelper.CreateFileStream(hitTracingPathChar);
 
-    *streamHit->GetStream() << "Time\tNode\tEvent\tContentID\t#Hops" << std::endl;
+    //*streamHit->GetStream() << "Time\tNode\tEvent\tContentID\t#Hops" << std::endl;
 
     for (NodeList::Iterator node = NodeList::Begin (); node != NodeList::End (); node ++)
     {
