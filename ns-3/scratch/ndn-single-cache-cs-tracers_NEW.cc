@@ -85,7 +85,7 @@ main (int argc, char *argv[9])
     plateauStr = ss.str();
     ss.str("");
     ss << numReqTot;
-    reqStr = numReqTot.str();
+    reqStr = ss.str();
     ss.str("");
 
 

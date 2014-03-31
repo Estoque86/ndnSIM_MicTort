@@ -16,8 +16,8 @@ plateau=0
 C=0.01
 M=10000
 L=4
-simDuration=2500000
-req=10000000
+simDuration=25000000
+req=100000000
 
 #runs=`$main -x General $1 | awk '/runs/{print $4}'`
 #echo $a
