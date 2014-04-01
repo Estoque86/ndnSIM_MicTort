@@ -1,0 +1,25 @@
+# single-cache.txt
+
+/**
+ * This scenario simulates a tandem cache
+ *
+ *     /--------\      /--------\	   /--------\
+ *     |consumer| <--> |  cache | <--> |producer|
+ *     |    +   |      \--------/	   \--------/
+ *     |  cache |
+ *     \--------/
+ *
+
+
+router
+
+#node       city	y   x	mpi-partition
+consumer	NA      40	-20 1
+cache		NA      40	0   1
+producer	NA      40	20	0
+
+link
+
+# from	    to          capacity	metric	delay	queue
+consumer    cache		10Mbps		1       1ms     100
+cache    	producer	10Mbps		1       1ms     100
