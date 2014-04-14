@@ -440,9 +440,7 @@ ForwardingStrategy::SatisfyPendingInterest (Ptr<Face> inFace,
 	std::stringstream ss;
 	std::string nodeIdString;
 
-	ss << inFace->GetNode()->GetId();
-    nodeIdString = ss.str();
-    ss.str("");
+	//ss << inFace->GetNode()->GetId();
 
 	if (inFace != 0)
     pitEntry->RemoveIncoming (inFace);
@@ -451,6 +449,10 @@ ForwardingStrategy::SatisfyPendingInterest (Ptr<Face> inFace,
   BOOST_FOREACH (const pit::IncomingFace &incoming, pitEntry->GetIncoming ())
     {
       bool ok = incoming.m_face->SendData (data);
+
+      ss << incoming.m_face->GetNode()->GetId();
+      nodeIdString = ss.str();
+      ss.str("");
 
       if(ok)
     	  m_dataEvent(data, nodeIdString, "TX");
