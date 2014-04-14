@@ -44,7 +44,8 @@ using namespace ndn;
 
 
 void HitTrace(Ptr<OutputStreamWrapper> stream, Ptr<const Interest> interest, std::string nodeId);
-
+void InterestTrace(Ptr<OutputStreamWrapper> stream, Ptr<const Interest> interest, std::string nodeId, std::string event);
+void DataTrace(Ptr<OutputStreamWrapper> stream, Ptr<const Data> data, std::string nodeId, std::string event);
 
 int
 main (int argc, char *argv[9])
@@ -108,9 +109,17 @@ main (int argc, char *argv[9])
     ss.str("");
 
     // **********   Composition of the scenario string   ***********
-    std::string scenarioString;
+    std::string scenarioString, scenarioStringInterest, scenarioStringData;
     ss << "logs/SIM=NDNSIM" << "_T=" << simType << "_REQ=" << numReqTot << "_M="<< catalogCardinality << "_C=" << cacheToCatalogRatio << "_L=" << lambda << "_A=" << alpha << "_R=" << simRunOut << ".out";
     scenarioString = ss.str();
+    ss.str("");
+
+    ss << "logs/SIM=NDNSIM" << "_T=" << simType << "_REQ=" << numReqTot << "_M="<< catalogCardinality << "_C=" << cacheToCatalogRatio << "_L=" << lambda << "_A=" << alpha << "_R=" << simRunOut << "_INTEREST.out";
+    scenarioStringInterest = ss.str();
+    ss.str("");
+
+    ss << "logs/SIM=NDNSIM" << "_T=" << simType << "_REQ=" << numReqTot << "_M="<< catalogCardinality << "_C=" << cacheToCatalogRatio << "_L=" << lambda << "_A=" << alpha << "_R=" << simRunOut << "_DATA.out";
+    scenarioStringData = ss.str();
     ss.str("");
 
     // **********   Reading the topology   ***********
@@ -170,16 +179,24 @@ main (int argc, char *argv[9])
 
     std::string ext = ".out";
     
-    std::string hitTracingPath;   // HIT Tracing
+    std::string hitTracingPath, interestTracingPath, dataTracingPath;   // HIT Tracing
     //ss << "tracing/" << simType << "/Hit/" << scenarioString << ext;
     //hitTracingPath = ss.str();
     hitTracingPath = scenarioString;
+    interestTracingPath = scenarioStringInterest;
+    dataTracingPath = scenarioStringData;
+
     const char* hitTracingPathChar = hitTracingPath.c_str();
+    const char* interestTracingPathChar = interestTracingPath.c_str();
+    const char* dataTracingPathChar = dataTracingPath.c_str();
+
     ss.str("");
     
     AsciiTraceHelper asciiTraceHelper;
 	// **********   OUTPUT STREAM   ***************
     Ptr<OutputStreamWrapper> streamHit = asciiTraceHelper.CreateFileStream(hitTracingPathChar);
+    Ptr<OutputStreamWrapper> streamInterest = asciiTraceHelper.CreateFileStream(interestTracingPathChar);
+    Ptr<OutputStreamWrapper> streamData = asciiTraceHelper.CreateFileStream(dataTracingPathChar);
 
     //*streamHit->GetStream() << "Time\tNode\tEvent\tContentID\t#Hops" << std::endl;
 
@@ -187,6 +204,8 @@ main (int argc, char *argv[9])
     {
    	  // **********   Association to the function that threats the event   **********
   	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Hit", MakeBoundCallback(&HitTrace, streamHit));
+  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Interest", MakeBoundCallback(&InterestTrace, streamInterest));
+  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Data", MakeBoundCallback(&DataTrace, streamData));
     }
 
     Simulator::Stop (Seconds (simDuration));
@@ -213,3 +232,17 @@ void HitTrace(Ptr<OutputStreamWrapper> stream, Ptr<const Interest> interest, std
 
 	*stream->GetStream() << Simulator::Now().GetMilliSeconds() << "\t" <<  nodeId << "\t" << "Hit_Event\t" << interest->GetName ().get (-1).toSeqNum () << "\t" << distance << std::endl;
 }
+
+void InterestTrace(Ptr<OutputStreamWrapper> stream, Ptr<const Interest> interest, std::string nodeId, std::string event)
+{
+	//NS_LOG_UNCOND("Chiamata a Funzione di Trace!");
+	*stream->GetStream() << Simulator::Now().GetMilliSeconds() << "\t" <<  nodeId << "\t" << event  << "\t" << interest->GetName ().get (-1).toSeqNum () << std::endl;
+}
+
+void DataTrace(Ptr<OutputStreamWrapper> stream, Ptr<const Data> data, std::string nodeId, std::string event)
+{
+	//NS_LOG_UNCOND("Chiamata a Funzione di Trace!");
+	*stream->GetStream() << Simulator::Now().GetMilliSeconds() << "\t" <<  nodeId << "\t" << event  << "\t" << data->GetName ().get (-1).toSeqNum () << std::endl;
+}
+
+
