@@ -473,6 +473,8 @@ protected:
   TracedCallback< Ptr<const pit::Entry> > m_timedOutInterests;
 
   TracedCallback<Ptr<const Interest>, std::string > m_hitEvent; ///
+  TracedCallback<Ptr<const Interest>, std::string, std::string > m_interestEvent; ///
+  TracedCallback<Ptr<const Data>, std::string, std::string > m_dataEvent; ///
 };
 
 } // namespace ndn

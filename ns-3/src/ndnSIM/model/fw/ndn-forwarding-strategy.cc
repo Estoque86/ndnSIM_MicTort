@@ -91,6 +91,8 @@ TypeId ForwardingStrategy::GetTypeId (void)
     ////////////////////////////////////////////////////////////////////
 
     .AddTraceSource ("Hit", "Hit", MakeTraceSourceAccessor (&ForwardingStrategy::m_hitEvent))
+    .AddTraceSource ("Interest", "Interest", MakeTraceSourceAccessor (&ForwardingStrategy::m_interestEvent))
+    .AddTraceSource ("Data", "Data", MakeTraceSourceAccessor (&ForwardingStrategy::m_dataEvent))
 
     .AddAttribute ("CacheUnsolicitedDataFromApps", "Cache unsolicited data that has been pushed from applications",
                    BooleanValue (true),
@@ -155,6 +157,19 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
   NS_LOG_FUNCTION (inFace << interest->GetName ());
   m_inInterests (interest, inFace);
 
+  std::stringstream ss;
+  std::string nodeIdString;
+
+  ss << inFace->GetNode()->GetId();
+  nodeIdString = ss.str();
+  ss.str("");
+
+  TypeId faceType = inFace->GetInstanceTypeId();
+  std::string faceType_name = faceType.GetName();
+
+  if(faceType_name.compare("ns3::ndn::AppFace") != 0)
+	  m_interestEvent(interest, nodeIdString, "RX");
+
   Ptr<pit::Entry> pitEntry = m_pit->Lookup (*interest);
   bool similarInterest = true;
   if (pitEntry == 0)
@@ -191,8 +206,6 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
   // *** MT *** If repo, the CS has size '0', but we want to produce a cache hit, following the rule
   // used here that the producer will generate the content ID present into the Interest if
   // it is supposed to serve the "prefix" that it is asked.
-  TypeId faceType = inFace->GetInstanceTypeId();
-  std::string faceType_name = faceType.GetName();
   if(m_contentStore->GetMaxSize() != 0)
   {
 	  contentObject = m_contentStore->Lookup (interest);
@@ -284,6 +297,15 @@ ForwardingStrategy::OnData (Ptr<Face> inFace,
 {
   NS_LOG_FUNCTION (inFace << data->GetName ());
   m_inData (data, inFace);
+
+  std::stringstream ss;
+  std::string nodeIdString;
+
+  ss << inFace->GetNode()->GetId();
+  nodeIdString = ss.str();
+  ss.str("");
+
+  m_dataEvent(data, nodeIdString, "RX");
 
   // Lookup PIT entry
   Ptr<pit::Entry> pitEntry = m_pit->Lookup (*data);
@@ -415,13 +437,23 @@ ForwardingStrategy::SatisfyPendingInterest (Ptr<Face> inFace,
                                             Ptr<const Data> data,
                                             Ptr<pit::Entry> pitEntry)
 {
-  if (inFace != 0)
+	std::stringstream ss;
+	std::string nodeIdString;
+
+	ss << inFace->GetNode()->GetId();
+    nodeIdString = ss.str();
+    ss.str("");
+
+	if (inFace != 0)
     pitEntry->RemoveIncoming (inFace);
 
   //satisfy all pending incoming Interests
   BOOST_FOREACH (const pit::IncomingFace &incoming, pitEntry->GetIncoming ())
     {
       bool ok = incoming.m_face->SendData (data);
+
+      if(ok)
+    	  m_dataEvent(data, nodeIdString, "TX");
 
       DidSendOutData (inFace, incoming.m_face, data, pitEntry);
       NS_LOG_DEBUG ("Satisfy " << *incoming.m_face);
@@ -513,6 +545,12 @@ ForwardingStrategy::PropagateInterest (Ptr<Face> inFace,
                                        Ptr<const Interest> interest,
                                        Ptr<pit::Entry> pitEntry)
 {
+  std::stringstream ss;
+  std::string nodeIdString;
+  ss << inFace->GetNode()->GetId();
+  nodeIdString = ss.str();
+  ss.str("");
+
   bool isRetransmitted = m_detectRetransmissions && // a small guard
                          DetectRetransmittedInterest (inFace, interest, pitEntry);
 
@@ -521,6 +559,9 @@ ForwardingStrategy::PropagateInterest (Ptr<Face> inFace,
   pitEntry->UpdateLifetime (interest->GetInterestLifetime ());
 
   bool propagated = DoPropagateInterest (inFace, interest, pitEntry);
+
+  if(propagated)
+	  m_interestEvent(interest, nodeIdString, "TX");
 
   if (!propagated && isRetransmitted) //give another chance if retransmitted
     {
