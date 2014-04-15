@@ -275,7 +275,15 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
 
       // Suppress this interest if we're still expecting data from some other face
       NS_LOG_DEBUG ("Suppress interests");
-      m_dropInterests (interest, inFace);
+
+	  std::stringstream ss;
+	  std::string nodeID;
+
+	  ss << inFace->GetNode()->GetId();
+	  nodeID = ss.str();
+	  ss.str("");
+	  m_dropInterests (interest, nodeID, "AGGREGATED");
+      //m_dropInterests (interest, inFace);
 
       //NS_LOG_UNCOND ("SUPPRESSED Interest: " << interest->GetName());
 
@@ -324,7 +332,15 @@ ForwardingStrategy::OnData (Ptr<Face> inFace,
           // (unsolicited data packets should not "poison" content store)
 
           //drop dulicated or not requested data packet
-          m_dropData (data, inFace);
+    	  std::stringstream ss;
+    	  std::string nodeID;
+
+    	  ss << inFace->GetNode()->GetId();
+    	  nodeID = ss.str();
+    	  ss.str("");
+    	  m_dropData (data, nodeID, "NOT_REQUESTED");
+          //m_dropData (data, inFace);
+
         }
 
       DidReceiveUnsolicitedData (inFace, data, cached);
@@ -360,7 +376,14 @@ void
 ForwardingStrategy::FailedToCreatePitEntry (Ptr<Face> inFace,
                                             Ptr<const Interest> interest)
 {
-  m_dropInterests (interest, inFace);
+	  std::stringstream ss;
+	  std::string nodeID;
+
+	  ss << inFace->GetNode()->GetId();
+	  nodeID = ss.str();
+	  ss.str("");
+	  m_dropInterests (interest, nodeID, "FAILED_PIT");
+    //m_dropInterests (interest, inFace);
 }
 
 void
@@ -374,7 +397,14 @@ ForwardingStrategy::DidReceiveDuplicateInterest (Ptr<Face> inFace,
   //                                                                                     //
   /////////////////////////////////////////////////////////////////////////////////////////
   pitEntry->AddIncoming (inFace);
-  m_dropInterests (interest, inFace);
+  std::stringstream ss;
+  std::string nodeID;
+
+  ss << inFace->GetNode()->GetId();
+  nodeID = ss.str();
+  ss.str("");
+  m_dropInterests (interest, nodeID, "DUPLICATE");
+  //m_dropInterests (interest, inFace);
 }
 
 void
@@ -399,7 +429,15 @@ ForwardingStrategy::DidExhaustForwardingOptions (Ptr<Face> inFace,
   NS_LOG_FUNCTION (this << boost::cref (*inFace));
   if (pitEntry->AreAllOutgoingInVain ())
     {
-      m_dropInterests (interest, inFace);
+	  std::stringstream ss;
+	  std::string nodeID;
+
+	  ss << inFace->GetNode()->GetId();
+	  nodeID = ss.str();
+	  ss.str("");
+	  m_dropInterests (interest, nodeID, "EXHAUST_FRW_OPTIONS");
+      //m_dropInterests (interest, inFace);
+
 
       // All incoming interests cannot be satisfied. Remove them
       pitEntry->ClearIncoming ();
@@ -462,7 +500,8 @@ ForwardingStrategy::SatisfyPendingInterest (Ptr<Face> inFace,
 
       if (!ok)
         {
-          m_dropData (data, incoming.m_face);
+    	  m_dropData (data, nodeIdString, "CONGESTION");
+          //m_dropData (data, incoming.m_face);
           NS_LOG_DEBUG ("Cannot satisfy data to " << *incoming.m_face);
         }
     }
@@ -639,7 +678,14 @@ ForwardingStrategy::TrySendOutInterest (Ptr<Face> inFace,
   bool successSend = outFace->SendInterest (interest);
   if (!successSend)
     {
-      m_dropInterests (interest, outFace);
+	  std::stringstream ss;
+	  std::string nodeID;
+
+	  ss << inFace->GetNode()->GetId();
+	  nodeID = ss.str();
+	  ss.str("");
+	  m_dropInterests (interest, nodeID, "CONGESTION");
+      //m_dropInterests (interest, outFace);
     }
 
   DidSendOutInterest (inFace, outFace, interest, pitEntry);

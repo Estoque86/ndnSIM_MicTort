@@ -204,8 +204,8 @@ main (int argc, char *argv[9])
     {
    	  // **********   Association to the function that threats the event   **********
   	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Hit", MakeBoundCallback(&HitTrace, streamHit));
-  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Interest", MakeBoundCallback(&InterestTrace, streamInterest));
-  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Data", MakeBoundCallback(&DataTrace, streamData));
+  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("DropInterest", MakeBoundCallback(&InterestTrace, streamInterest));
+  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("DropData", MakeBoundCallback(&DataTrace, streamData));
     }
 
     Simulator::Stop (Seconds (simDuration));
