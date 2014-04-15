@@ -109,7 +109,7 @@ main (int argc, char *argv[9])
     ss.str("");
 
     // **********   Composition of the scenario string   ***********
-    std::string scenarioString, scenarioStringInterest, scenarioStringData;
+    std::string scenarioString, scenarioStringInterest, scenarioStringData, scenarioStringInterestDrop, scenarioStringDataDrop;
     ss << "logs/SIM=NDNSIM" << "_T=" << simType << "_REQ=" << numReqTot << "_M="<< catalogCardinality << "_C=" << cacheToCatalogRatio << "_L=" << lambda << "_A=" << alpha << "_R=" << simRunOut << ".out";
     scenarioString = ss.str();
     ss.str("");
@@ -121,6 +121,15 @@ main (int argc, char *argv[9])
     ss << "logs/SIM=NDNSIM" << "_T=" << simType << "_REQ=" << numReqTot << "_M="<< catalogCardinality << "_C=" << cacheToCatalogRatio << "_L=" << lambda << "_A=" << alpha << "_R=" << simRunOut << "_DATA.out";
     scenarioStringData = ss.str();
     ss.str("");
+
+    ss << "logs/SIM=NDNSIM" << "_T=" << simType << "_REQ=" << numReqTot << "_M="<< catalogCardinality << "_C=" << cacheToCatalogRatio << "_L=" << lambda << "_A=" << alpha << "_R=" << simRunOut << "_INTEREST_DROP.out";
+    scenarioStringInterestDrop = ss.str();
+    ss.str("");
+
+    ss << "logs/SIM=NDNSIM" << "_T=" << simType << "_REQ=" << numReqTot << "_M="<< catalogCardinality << "_C=" << cacheToCatalogRatio << "_L=" << lambda << "_A=" << alpha << "_R=" << simRunOut << "_DATA_DROP.out";
+    scenarioStringDataDrop = ss.str();
+    ss.str("");
+
 
     // **********   Reading the topology   ***********
     AnnotatedTopologyReader topologyReader ("", 1);
@@ -179,16 +188,21 @@ main (int argc, char *argv[9])
 
     std::string ext = ".out";
     
-    std::string hitTracingPath, interestTracingPath, dataTracingPath;   // HIT Tracing
+    std::string hitTracingPath, interestTracingPath, dataTracingPath,interestDropTracingPath, dataDropTracingPath;   // HIT Tracing
     //ss << "tracing/" << simType << "/Hit/" << scenarioString << ext;
     //hitTracingPath = ss.str();
     hitTracingPath = scenarioString;
     interestTracingPath = scenarioStringInterest;
     dataTracingPath = scenarioStringData;
+    interestDropTracingPath = scenarioStringInterestDrop;
+    dataDropTracingPath = scenarioStringDataDrop;
+
 
     const char* hitTracingPathChar = hitTracingPath.c_str();
     const char* interestTracingPathChar = interestTracingPath.c_str();
     const char* dataTracingPathChar = dataTracingPath.c_str();
+    const char* interestDropTracingPathChar = interestDropTracingPath.c_str();
+    const char* dataDropTracingPathChar = dataDropTracingPath.c_str();
 
     ss.str("");
     
@@ -197,6 +211,8 @@ main (int argc, char *argv[9])
     Ptr<OutputStreamWrapper> streamHit = asciiTraceHelper.CreateFileStream(hitTracingPathChar);
     Ptr<OutputStreamWrapper> streamInterest = asciiTraceHelper.CreateFileStream(interestTracingPathChar);
     Ptr<OutputStreamWrapper> streamData = asciiTraceHelper.CreateFileStream(dataTracingPathChar);
+    Ptr<OutputStreamWrapper> streamInterestDrop = asciiTraceHelper.CreateFileStream(interestDropTracingPathChar);
+    Ptr<OutputStreamWrapper> streamDataDrop = asciiTraceHelper.CreateFileStream(dataDropTracingPathChar);
 
     //*streamHit->GetStream() << "Time\tNode\tEvent\tContentID\t#Hops" << std::endl;
 
@@ -204,8 +220,10 @@ main (int argc, char *argv[9])
     {
    	  // **********   Association to the function that threats the event   **********
   	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Hit", MakeBoundCallback(&HitTrace, streamHit));
-  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("DropInterests", MakeBoundCallback(&InterestTrace, streamInterest));
-  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("DropData", MakeBoundCallback(&DataTrace, streamData));
+  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Interests", MakeBoundCallback(&InterestTrace, streamInterest));
+  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Data", MakeBoundCallback(&DataTrace, streamData));
+  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("DropInterests", MakeBoundCallback(&InterestTrace, streamInterestDrop));
+  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("DropData", MakeBoundCallback(&DataTrace, streamDataDrop));
     }
 
     Simulator::Stop (Seconds (simDuration));
