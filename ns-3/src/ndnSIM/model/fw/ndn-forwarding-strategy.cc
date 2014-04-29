@@ -167,8 +167,8 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
   TypeId faceType = inFace->GetInstanceTypeId();
   std::string faceType_name = faceType.GetName();
 
-  if(faceType_name.compare("ns3::ndn::AppFace") != 0)
-	  m_interestEvent(interest, nodeIdString, "RX");
+  if(faceType_name.compare("ns3::ndn::AppFace") == 0)
+	  m_interestEvent(interest, nodeIdString, "TX");
 
   Ptr<pit::Entry> pitEntry = m_pit->Lookup (*interest);
   bool similarInterest = true;
@@ -601,8 +601,8 @@ ForwardingStrategy::PropagateInterest (Ptr<Face> inFace,
 
   bool propagated = DoPropagateInterest (inFace, interest, pitEntry);
 
-  if(propagated)
-	  m_interestEvent(interest, nodeIdString, "TX");
+  //if(propagated)
+	  //m_interestEvent(interest, nodeIdString, "TX");
 
   if (!propagated && isRetransmitted) //give another chance if retransmitted
     {
