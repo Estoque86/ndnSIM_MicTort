@@ -165,7 +165,7 @@ main (int argc, char *argv[9])
     consumerHelper.SetPrefix ("/root");
     consumerHelper.SetAttribute ("Frequency", StringValue (lambdaStr)); // lambda Interest per second
     consumerHelper.SetAttribute ("NumberOfContents", StringValue (catalogCardinalityStr));
-    consumerHelper.SetAttribute ("Randomize", StringValue ("none"));
+    consumerHelper.SetAttribute ("Randomize", StringValue ("exponential"));
     consumerHelper.SetAttribute ("q", StringValue (plateauStr)); // q paremeter
     consumerHelper.SetAttribute ("s", StringValue (alphaStr)); // Zipf's exponent
     
@@ -192,16 +192,16 @@ main (int argc, char *argv[9])
     //ss << "tracing/" << simType << "/Hit/" << scenarioString << ext;
     //hitTracingPath = ss.str();
     hitTracingPath = scenarioString;
-    interestTracingPath = scenarioStringInterest;
+    //interestTracingPath = scenarioStringInterest;
     dataTracingPath = scenarioStringData;
-    interestDropTracingPath = scenarioStringInterestDrop;
+    //interestDropTracingPath = scenarioStringInterestDrop;
     dataDropTracingPath = scenarioStringDataDrop;
 
 
     const char* hitTracingPathChar = hitTracingPath.c_str();
-    const char* interestTracingPathChar = interestTracingPath.c_str();
+    //const char* interestTracingPathChar = interestTracingPath.c_str();
     const char* dataTracingPathChar = dataTracingPath.c_str();
-    const char* interestDropTracingPathChar = interestDropTracingPath.c_str();
+    //const char* interestDropTracingPathChar = interestDropTracingPath.c_str();
     const char* dataDropTracingPathChar = dataDropTracingPath.c_str();
 
     ss.str("");
@@ -209,9 +209,9 @@ main (int argc, char *argv[9])
     AsciiTraceHelper asciiTraceHelper;
 	// **********   OUTPUT STREAM   ***************
     Ptr<OutputStreamWrapper> streamHit = asciiTraceHelper.CreateFileStream(hitTracingPathChar);
-    Ptr<OutputStreamWrapper> streamInterest = asciiTraceHelper.CreateFileStream(interestTracingPathChar);
+    //Ptr<OutputStreamWrapper> streamInterest = asciiTraceHelper.CreateFileStream(interestTracingPathChar);
     Ptr<OutputStreamWrapper> streamData = asciiTraceHelper.CreateFileStream(dataTracingPathChar);
-    Ptr<OutputStreamWrapper> streamInterestDrop = asciiTraceHelper.CreateFileStream(interestDropTracingPathChar);
+    //Ptr<OutputStreamWrapper> streamInterestDrop = asciiTraceHelper.CreateFileStream(interestDropTracingPathChar);
     Ptr<OutputStreamWrapper> streamDataDrop = asciiTraceHelper.CreateFileStream(dataDropTracingPathChar);
 
     //*streamHit->GetStream() << "Time\tNode\tEvent\tContentID\t#Hops" << std::endl;
@@ -220,9 +220,9 @@ main (int argc, char *argv[9])
     {
    	  // **********   Association to the function that threats the event   **********
   	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Hit", MakeBoundCallback(&HitTrace, streamHit));
-  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Interests", MakeBoundCallback(&InterestTrace, streamInterest));
+  	  //(*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Interests", MakeBoundCallback(&InterestTrace, streamInterest));
   	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("Data", MakeBoundCallback(&DataTrace, streamData));
-  	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("DropInterests", MakeBoundCallback(&InterestTrace, streamInterestDrop));
+  	  //(*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("DropInterests", MakeBoundCallback(&InterestTrace, streamInterestDrop));
   	  (*node)->GetObject<ForwardingStrategy>()->TraceConnectWithoutContext("DropData", MakeBoundCallback(&DataTrace, streamDataDrop));
     }
 
