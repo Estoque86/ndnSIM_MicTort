@@ -603,6 +603,8 @@ ForwardingStrategy::PropagateInterest (Ptr<Face> inFace,
 
   if(propagated)
 	  m_interestEvent(interest, nodeIdString, "TX");
+else
+NS_LOG_UNCOND("NOT PROPAGATED!")
 
   if (!propagated && isRetransmitted) //give another chance if retransmitted
     {
