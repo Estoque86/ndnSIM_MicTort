@@ -448,8 +448,8 @@ protected:
   TracedCallback<Ptr<const Interest>,
                  Ptr<const Face> > m_inInterests; ///< @brief trace of incoming Interests
 
-  //TracedCallback<Ptr<const Interest>,
-    //             Ptr<const Face> > m_dropInterests; ///< @brief trace of dropped Interests
+  TracedCallback<Ptr<const Interest>,
+                 Ptr<const Face> > m_dropInterests; ///< @brief trace of dropped Interests
 
   ////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////
@@ -462,11 +462,11 @@ protected:
   TracedCallback<Ptr<const Data>,
                  Ptr<const Face> > m_inData; ///< @brief trace of incoming Data
 
-  //TracedCallback<Ptr<const Data>,
-    //              Ptr<const Face> > m_dropData;  ///< @brief trace of dropped Data
+  TracedCallback<Ptr<const Data>,
+                  Ptr<const Face> > m_dropData;  ///< @brief trace of dropped Data
 
-  TracedCallback<Ptr<const Data>, std::string, std::string> m_dropData;  ///< @brief trace of dropped Data
-  TracedCallback<Ptr<const Interest>, std::string, std::string> m_dropInterests;  ///< @brief trace of dropped Data
+  //TracedCallback<Ptr<const Data>, std::string, std::string> m_dropData;  ///< @brief trace of dropped Data
+  //TracedCallback<Ptr<const Interest>, std::string, std::string> m_dropInterests;  ///< @brief trace of dropped Data
 
   ////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////
