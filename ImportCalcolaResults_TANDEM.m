@@ -6,7 +6,7 @@
 %A = input ('Input the Zipf Exponent: ');
 %R = input ('Input the number of runs: ');
 
-stringOutput = 'DATA_T=TANDEM_CACHE_REQ=10000000.mat';
+stringOutput = 'DATA_SIM=CCNSIM_T=TANDEM_CACHE_A=06_REQ=100000000.mat';
 
 % STRINGHE 
 
@@ -43,9 +43,9 @@ alphaStrCompl{4} = 'alpha_12';
 alphaValues = [0.6 0.8 1 1.2];
 
 simRuns = 10;
-numRequests = 10100000;
-officialNumRequests = 10000000;
-reqStr = '10000000';
+numRequests = 100100000;
+officialNumRequests = 100000000;
+reqStr = '100000000';
 catalog = 10000;
 IDs = 1:catalog;
 target = 100;
@@ -54,13 +54,13 @@ tStudent = [1.2 6.314 2.920 2.353 2.132 2.015 1.943 1.895 1.860 1.833 1.812 1.79
 
 % Valori effettivi dei parametri simulati (servono a prendere le stringhe
 
-numSimulators = [1 2 3];
+numSimulators = [1];
 numScenarios = [1];
 numCatalogs = [1];
 numRatios = [1];
 numLambdas = [1];
-numAlphas = [1 2 3 4];
-%numAlphas = [3];
+%numAlphas = [1 2 3 4];
+numAlphas = [1];
 
 
 % Import Che Approx
@@ -91,7 +91,6 @@ for g=1:length(numAlphas)
     fileID_2_Leo = fopen(fileCheCompl_2_Leo);
     Che_Approx_2_Leo.(alphaStrCompl{numAlphas(g)}) = textscan(fileID_2_Leo,'%f32');
     fileID_2_Leo = fclose(fileID_2_Leo);
-
 end
 
 
@@ -127,16 +126,17 @@ for g = 1:length(numAlphas)
             run = int2str(i);
             disp(sprintf('%s',strcat(simulatorStr{numSimulators(j)}, ' ' ,run)));
             nome_file=strcat(folder,'SIM=',simulatorStr{numSimulators(j)},'_T=',scenarioStr{numScenarios(1)},'_REQ=',reqStr,'_M=',catalogStr{numCatalogs(1)},'_C=',ratioStr{numRatios(1)},'_L=',lambdaStr{numLambdas(1)},'_A=',alphaStr{numAlphas(g)},'_R=',run,ext);
+            disp(sprintf('%s', nome_file));
             fileID = fopen(nome_file);
-            scenarioImport.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = textscan(fileID,'%f32 %s %s %d32 %d8');
+            scenarioImport.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = textscan(fileID,'%d32 %d8');
             fileID = fclose(fileID);
-            limit = length(scenarioImport.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}){4});
+            limit = length(scenarioImport.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}){1});
             limitRequests.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)})(i+1,1) = limit;
             if (limitRequests.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)})(i+1,1) < minLimit.(alphaStrCompl{numAlphas(g)}))
                 minLimit.(alphaStrCompl{numAlphas(g)}) = limitRequests.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)})(i+1,1);
             end
-            contentID.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)})(1:limit,i+1) = scenarioImport.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}){4}(1:limit,1);
-            hitDistance.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)})(1:limit,i+1) = scenarioImport.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}){5}(1:limit,1);
+            contentID.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)})(1:limit,i+1) = scenarioImport.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}){1}(1:limit,1);
+            hitDistance.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)})(1:limit,i+1) = scenarioImport.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}){2}(1:limit,1);
             clear scenarioImport;
         end
     end
@@ -175,13 +175,32 @@ end
 %alphaValue = 1;
 
 zipfLimit = struct;
+zipf = struct;
+normFactor = struct;
 freqZipf = struct;
 
 for g=1:length(numAlphas)
-    zipf.(alphaStrCompl{numAlphas(g)}) = alphaValues(numAlphas(g))./(1:catalog);
-    zipf.(alphaStrCompl{numAlphas(g)}) = zipf.(alphaStrCompl{numAlphas(g)}) / sum(zipf.(alphaStrCompl{numAlphas(g)}));
-    freqZipf.(alphaStrCompl{numAlphas(g)}) = minLimit.(alphaStrCompl{numAlphas(g)}) * zipf.(alphaStrCompl{numAlphas(g)});
+    normFactor.(alphaStrCompl{numAlphas(g)}) = 0;
+    zipf.(alphaStrCompl{numAlphas(g)}) = zeros(1, catalog);
 end
+
+for g=1:length(numAlphas)
+    for z=1:catalog
+        normFactor.(alphaStrCompl{numAlphas(g)}) = normFactor.(alphaStrCompl{numAlphas(g)}) + (1/z^alphaValues((numAlphas(g))));
+    end
+end
+
+for g=1:length(numAlphas)
+    normFactor.(alphaStrCompl{numAlphas(g)}) = 1 / normFactor.(alphaStrCompl{numAlphas(g)});
+end
+
+for g=1:length(numAlphas)
+    for z=1:catalog
+        zipf.(alphaStrCompl{numAlphas(g)})(1,z) = normFactor.(alphaStrCompl{numAlphas(g)}) * (1/z^alphaValues((numAlphas(g))));
+        freqZipf.(alphaStrCompl{numAlphas(g)}) = minLimit.(alphaStrCompl{numAlphas(g)}) * zipf.(alphaStrCompl{numAlphas(g)});
+    end
+end
+
 
 %zipf = alphaValue./(1:catalog);
 %zipf = zipf/sum(zipf);
@@ -473,25 +492,25 @@ pHit_2 = struct;
 pHit_2_Leo = struct;
 
 for g=1:length(numAlphas)
-    pHit_1.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 4);
-    pHit_2.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 4);
-    pHit_2_Leo.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 4);
+    pHit_1.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 2);
+    pHit_2.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 2);
+    pHit_2_Leo.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 2);
 end
 for g=1:length(numAlphas)
     pHit_1.(alphaStrCompl{numAlphas(g)})(:,1) = pHitContentsMean_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}).('mean')(:,1);
-    pHit_1.(alphaStrCompl{numAlphas(g)})(:,2) = pHitContentsMean_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(2)}).('mean')(:,1);    
-    pHit_1.(alphaStrCompl{numAlphas(g)})(:,3) = pHitContentsMean_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(3)}).('mean')(:,1);
-    pHit_1.(alphaStrCompl{numAlphas(g)})(:,4) = Che_Approx_1.(alphaStrCompl{numAlphas(g)}){1}(:,1);
+    %pHit_1.(alphaStrCompl{numAlphas(g)})(:,2) = pHitContentsMean_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(2)}).('mean')(:,1);    
+    %pHit_1.(alphaStrCompl{numAlphas(g)})(:,3) = pHitContentsMean_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(3)}).('mean')(:,1);
+    pHit_1.(alphaStrCompl{numAlphas(g)})(:,2) = Che_Approx_1.(alphaStrCompl{numAlphas(g)}){1}(:,1);
 
     pHit_2.(alphaStrCompl{numAlphas(g)})(:,1) = pHitContentsMean_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}).('mean')(:,1);
-    pHit_2.(alphaStrCompl{numAlphas(g)})(:,2) = pHitContentsMean_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(2)}).('mean')(:,1);    
-    pHit_2.(alphaStrCompl{numAlphas(g)})(:,3) = pHitContentsMean_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(3)}).('mean')(:,1);
-    pHit_2.(alphaStrCompl{numAlphas(g)})(:,4) = Che_Approx_2.(alphaStrCompl{numAlphas(g)}){1}(:,1);
+    %pHit_2.(alphaStrCompl{numAlphas(g)})(:,2) = pHitContentsMean_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(2)}).('mean')(:,1);    
+    %pHit_2.(alphaStrCompl{numAlphas(g)})(:,3) = pHitContentsMean_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(3)}).('mean')(:,1);
+    pHit_2.(alphaStrCompl{numAlphas(g)})(:,2) = Che_Approx_2.(alphaStrCompl{numAlphas(g)}){1}(:,1);
     
     pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,1) = pHitContentsMean_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}).('mean')(:,1);
-    pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,2) = pHitContentsMean_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(2)}).('mean')(:,1);    
-    pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,3) = pHitContentsMean_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(3)}).('mean')(:,1);
-    pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,4) = Che_Approx_2_Leo.(alphaStrCompl{numAlphas(g)}){1}(:,1);
+    %pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,2) = pHitContentsMean_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(2)}).('mean')(:,1);    
+    %pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,3) = pHitContentsMean_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(3)}).('mean')(:,1);
+    pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,2) = Che_Approx_2_Leo.(alphaStrCompl{numAlphas(g)}){1}(:,1);
 
     %createHitLogPlot(IDs, pHit_1.(alphaStrCompl{numAlphas(g)}), 1, numAlphas(g));
     %createHitLogPlot(IDs, pHit_2.(alphaStrCompl{numAlphas(g)}), 1, numAlphas(g));
@@ -513,14 +532,14 @@ norm_2_Leo = struct;
 pHitNormalized_2_Leo = struct;
 
 for g=1:length(numAlphas)
-    norm_1.(alphaStrCompl{numAlphas(g)}) = [pHit_1.(alphaStrCompl{numAlphas(g)})(:,4), pHit_1.(alphaStrCompl{numAlphas(g)})(:,4), pHit_1.(alphaStrCompl{numAlphas(g)})(:,4), pHit_1.(alphaStrCompl{numAlphas(g)})(:,4)];
-    pHitNormalized_1.(alphaStrCompl{numAlphas(g)}) = zeros(catalog,4);
+    norm_1.(alphaStrCompl{numAlphas(g)}) = [pHit_1.(alphaStrCompl{numAlphas(g)})(:,2), pHit_1.(alphaStrCompl{numAlphas(g)})(:,2)];
+    pHitNormalized_1.(alphaStrCompl{numAlphas(g)}) = zeros(catalog,2);
     
-    norm_2.(alphaStrCompl{numAlphas(g)}) = [pHit_2.(alphaStrCompl{numAlphas(g)})(:,4), pHit_2.(alphaStrCompl{numAlphas(g)})(:,4), pHit_2.(alphaStrCompl{numAlphas(g)})(:,4), pHit_2.(alphaStrCompl{numAlphas(g)})(:,4)];
-    pHitNormalized_2.(alphaStrCompl{numAlphas(g)}) = zeros(catalog,4);
+    norm_2.(alphaStrCompl{numAlphas(g)}) = [pHit_2.(alphaStrCompl{numAlphas(g)})(:,2), pHit_2.(alphaStrCompl{numAlphas(g)})(:,2)];
+    pHitNormalized_2.(alphaStrCompl{numAlphas(g)}) = zeros(catalog,2);
     
-    norm_2_Leo.(alphaStrCompl{numAlphas(g)}) = [pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,4), pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,4), pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,4), pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,4)];
-    pHitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)}) = zeros(catalog,4);
+    norm_2_Leo.(alphaStrCompl{numAlphas(g)}) = [pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,2), pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(:,2)];
+    pHitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)}) = zeros(catalog,2);
 end
 for g=1:length(numAlphas)
     pHitNormalized_1.(alphaStrCompl{numAlphas(g)}) = pHit_1.(alphaStrCompl{numAlphas(g)})./norm_1.(alphaStrCompl{numAlphas(g)});
@@ -577,124 +596,160 @@ fForPhit_2_Leo = struct;
 fForPhitNormalized_2_Leo = struct;
 
 for g=1:length(numAlphas)
-    fForPhit_1.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 3);
-    fForPhitNormalized_1.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 3);
+    fForPhit_1.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
+    fForPhitNormalized_1.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
     
-    fForPhit_2.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 3);
-    fForPhitNormalized_2.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 3);
+    fForPhit_2.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
+    fForPhitNormalized_2.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
     
-    fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 3);
-    fForPhitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 3);
+    fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
+    fForPhitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
 end
 
 for g=1:length(numAlphas)
     for j = 1:length(numSimulators)
         for z = 1:catalog
-            fForPhit_1.(alphaStrCompl{numAlphas(g)})(z,j) = (pHit_1.(alphaStrCompl{numAlphas(g)})(z,4) - pHit_1.(alphaStrCompl{numAlphas(g)})(z,j)) / pHit_1.(alphaStrCompl{numAlphas(g)})(z,4);
-            fForPhitNormalized_1.(alphaStrCompl{numAlphas(g)})(z,j) = (pHitNormalized_1.(alphaStrCompl{numAlphas(g)})(z,4) - pHitNormalized_1.(alphaStrCompl{numAlphas(g)})(z,j)) / pHitNormalized_1.(alphaStrCompl{numAlphas(g)})(z,4);
+            fForPhit_1.(alphaStrCompl{numAlphas(g)})(z,j) = (pHit_1.(alphaStrCompl{numAlphas(g)})(z,2) - pHit_1.(alphaStrCompl{numAlphas(g)})(z,j)) / pHit_1.(alphaStrCompl{numAlphas(g)})(z,2);
+            fForPhitNormalized_1.(alphaStrCompl{numAlphas(g)})(z,j) = (pHitNormalized_1.(alphaStrCompl{numAlphas(g)})(z,2) - pHitNormalized_1.(alphaStrCompl{numAlphas(g)})(z,j)) / pHitNormalized_1.(alphaStrCompl{numAlphas(g)})(z,2);
             
-            fForPhit_2.(alphaStrCompl{numAlphas(g)})(z,j) = (pHit_2.(alphaStrCompl{numAlphas(g)})(z,4) - pHit_2.(alphaStrCompl{numAlphas(g)})(z,j)) / pHit_2.(alphaStrCompl{numAlphas(g)})(z,4);
-            fForPhitNormalized_2.(alphaStrCompl{numAlphas(g)})(z,j) = (pHitNormalized_2.(alphaStrCompl{numAlphas(g)})(z,4) - pHitNormalized_2.(alphaStrCompl{numAlphas(g)})(z,j)) / pHitNormalized_2.(alphaStrCompl{numAlphas(g)})(z,4);
+            fForPhit_2.(alphaStrCompl{numAlphas(g)})(z,j) = (pHit_2.(alphaStrCompl{numAlphas(g)})(z,2) - pHit_2.(alphaStrCompl{numAlphas(g)})(z,j)) / pHit_2.(alphaStrCompl{numAlphas(g)})(z,2);
+            fForPhitNormalized_2.(alphaStrCompl{numAlphas(g)})(z,j) = (pHitNormalized_2.(alphaStrCompl{numAlphas(g)})(z,2) - pHitNormalized_2.(alphaStrCompl{numAlphas(g)})(z,j)) / pHitNormalized_2.(alphaStrCompl{numAlphas(g)})(z,2);
             
-            fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j) = (pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,4) - pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j)) / pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,4);
-            fForPhitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j) = (pHitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(z,4) - pHitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j)) / pHitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(z,4);
+            fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j) = (pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,2) - pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j)) / pHit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,2);
+            fForPhitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j) = (pHitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(z,2) - pHitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j)) / pHitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(z,2);
         end
     end
 end
+
+
+expectFforPhit_1 = struct;
+expectFforPhit_2 = struct;
+expectFforPhit_2_Leo = struct;
+for g=1:length(numAlphas)
+   % expectFforPhit.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 3);
+   % expectFforPhitNormalized.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 3);
+    expectFforPhit_1.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
+    expectFforPhit_2.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
+    expectFforPhit_2_Leo.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
+end
+
+for g=1:length(numAlphas)
+    for j = 1:length(numSimulators)
+        for z = 1:catalog
+            if z < catalog
+                expectFforPhit_1.(alphaStrCompl{numAlphas(g)})(z,j) = mean(fForPhit_1.(alphaStrCompl{numAlphas(g)})(z+1:catalog,j));
+                expectFforPhit_2.(alphaStrCompl{numAlphas(g)})(z,j) = mean(fForPhit_2.(alphaStrCompl{numAlphas(g)})(z+1:catalog,j));
+                expectFforPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j) = mean(fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(z+1:catalog,j));
+            else
+                expectFforPhit_1.(alphaStrCompl{numAlphas(g)})(z,j) = fForPhit_1.(alphaStrCompl{numAlphas(g)})(z,j);
+                expectFforPhit_2.(alphaStrCompl{numAlphas(g)})(z,j) = fForPhit_2.(alphaStrCompl{numAlphas(g)})(z,j);
+                expectFforPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j) = fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j);
+            end
+        end
+    end
+end
+
+
+% Expected F for ABS Phit E[|ei|]
+
+expectAbsFforPhit_1 = struct;
+expectAbsFforPhit_2 = struct;
+expectAbsFforPhit_2_Leo = struct;
+for g=1:length(numAlphas)
+    %expectAbsFforPhit.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 3);
+    %expectAbsFforPhitNormalized.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 3);
+    expectAbsFforPhit_1.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
+    expectAbsFforPhit_2.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
+    expectAbsFforPhit_2_Leo.(alphaStrCompl{numAlphas(g)}) = zeros(catalog, 1);
+end
+
+for g=1:length(numAlphas)
+    for j = 1:length(numSimulators)
+        for z = 1:catalog
+            if z < catalog
+                expectAbsFforPhit_1.(alphaStrCompl{numAlphas(g)})(z,j) = mean(abs(fForPhit_1.(alphaStrCompl{numAlphas(g)})(z+1:catalog,j)));
+                expectAbsFforPhit_2.(alphaStrCompl{numAlphas(g)})(z,j) = mean(abs(fForPhit_2.(alphaStrCompl{numAlphas(g)})(z+1:catalog,j)));
+                expectAbsFforPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j) = mean(abs(fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(z+1:catalog,j)));       
+            else
+                expectAbsFforPhit_1.(alphaStrCompl{numAlphas(g)})(z,j) = abs(fForPhit_1.(alphaStrCompl{numAlphas(g)})(z,j));
+                expectAbsFforPhit_2.(alphaStrCompl{numAlphas(g)})(z,j) = abs(fForPhit_2.(alphaStrCompl{numAlphas(g)})(z,j));
+                expectAbsFforPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j) = abs(fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(z,j));
+            end
+        end
+    end
+end
+
+
+
 
 % Calculating the function f() for significative contents, i.e., p50, p75,
 % p90, p95
 
 % FIRST CACHE
-f50_1 = struct;
-f50Norm_1 = struct;
+f50_1_REQ_100mln = struct;
 
 % SECOND CACHE
-f50_2 = struct;
-f50Norm_2 = struct;
+f50_2_REQ_100mln = struct;
 
 % SECOND CACHE LEO
-f50_2_Leo = struct;
-f50Norm_2_Leo = struct;
+f50_2_Leo_REQ_100mln = struct;
 
 for g=1:length(numAlphas)
     for j = 1:length(numSimulators)
-        f50_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_1.(alphaStrCompl{numAlphas(g)})(cont50.(alphaStrCompl{numAlphas(g)}),j);
-        f50Norm_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_1.(alphaStrCompl{numAlphas(g)})(cont50.(alphaStrCompl{numAlphas(g)}),j);
+        f50_1_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_1.(alphaStrCompl{numAlphas(g)})(cont50.(alphaStrCompl{numAlphas(g)}),j);
         
-        f50_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_2.(alphaStrCompl{numAlphas(g)})(cont50.(alphaStrCompl{numAlphas(g)}),j);
-        f50Norm_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_2.(alphaStrCompl{numAlphas(g)})(cont50.(alphaStrCompl{numAlphas(g)}),j);
+        f50_2_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_2.(alphaStrCompl{numAlphas(g)})(cont50.(alphaStrCompl{numAlphas(g)}),j);
         
-        f50_2_Leo.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(cont50.(alphaStrCompl{numAlphas(g)}),j);
-        f50Norm_2_Leo.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(cont50.(alphaStrCompl{numAlphas(g)}),j);
+        f50_2_Leo_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(cont50.(alphaStrCompl{numAlphas(g)}),j);
     end
 end
 
-f75_1 = struct;
-f75Norm_1 = struct;
+f75_1_REQ_100mln = struct;
 
-f75_2 = struct;
-f75Norm_2 = struct;
+f75_2_REQ_100mln = struct;
 
-f75_2_Leo = struct;
-f75Norm_2_Leo = struct;
+f75_2_Leo_REQ_100mln = struct;
 
 for g=1:length(numAlphas)
     for j = 1:length(numSimulators)
-        f75_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_1.(alphaStrCompl{numAlphas(g)})(cont75.(alphaStrCompl{numAlphas(g)}),j);
-        f75Norm_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_1.(alphaStrCompl{numAlphas(g)})(cont75.(alphaStrCompl{numAlphas(g)}),j);
+        f75_1_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_1.(alphaStrCompl{numAlphas(g)})(cont75.(alphaStrCompl{numAlphas(g)}),j);
 
-        f75_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_2.(alphaStrCompl{numAlphas(g)})(cont75.(alphaStrCompl{numAlphas(g)}),j);
-        f75Norm_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_2.(alphaStrCompl{numAlphas(g)})(cont75.(alphaStrCompl{numAlphas(g)}),j);
+        f75_2_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_2.(alphaStrCompl{numAlphas(g)})(cont75.(alphaStrCompl{numAlphas(g)}),j);
         
-        f75_2_Leo.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(cont75.(alphaStrCompl{numAlphas(g)}),j);
-        f75Norm_2_Leo.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(cont75.(alphaStrCompl{numAlphas(g)}),j);
+        f75_2_Leo_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(cont75.(alphaStrCompl{numAlphas(g)}),j);
     end
 end
 
-f90_1 = struct;
-f90Norm_1 = struct;
+f90_1_REQ_100mln = struct;
 
-f90_2 = struct;
-f90Norm_2 = struct;
+f90_2_REQ_100mln = struct;
 
-f90_2_Leo = struct;
-f90Norm_2_Leo = struct;
+f90_2_Leo_REQ_100mln = struct;
 
 for g=1:length(numAlphas)
     for j = 1:length(numSimulators)
-        f90_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_1.(alphaStrCompl{numAlphas(g)})(cont90.(alphaStrCompl{numAlphas(g)}),j);
-        f90Norm_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_1.(alphaStrCompl{numAlphas(g)})(cont90.(alphaStrCompl{numAlphas(g)}),j);
+        f90_1_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_1.(alphaStrCompl{numAlphas(g)})(cont90.(alphaStrCompl{numAlphas(g)}),j);
 
-        f90_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_2.(alphaStrCompl{numAlphas(g)})(cont90.(alphaStrCompl{numAlphas(g)}),j);
-        f90Norm_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_2.(alphaStrCompl{numAlphas(g)})(cont90.(alphaStrCompl{numAlphas(g)}),j);
+        f90_2_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_2.(alphaStrCompl{numAlphas(g)})(cont90.(alphaStrCompl{numAlphas(g)}),j);
         
-        f90_2_Leo.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(cont90.(alphaStrCompl{numAlphas(g)}),j);
-        f90Norm_2_Leo.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(cont90.(alphaStrCompl{numAlphas(g)}),j);
+        f90_2_Leo_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(cont90.(alphaStrCompl{numAlphas(g)}),j);
     end
 end
 
-f95_1 = struct;
-f95Norm_1 = struct;
+f95_1_REQ_100mln = struct;
 
-f95_2 = struct;
-f95Norm_2 = struct;
+f95_2_REQ_100mln = struct;
 
-f95_2_Leo = struct;
-f95Norm_2_Leo = struct;
+f95_2_Leo_REQ_100mln = struct;
 
 for g=1:length(numAlphas)
     for j = 1:length(numSimulators)
-        f95_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_1.(alphaStrCompl{numAlphas(g)})(cont95.(alphaStrCompl{numAlphas(g)}),j);
-        f95Norm_1.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_1.(alphaStrCompl{numAlphas(g)})(cont95.(alphaStrCompl{numAlphas(g)}),j);
+        f95_1_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_1.(alphaStrCompl{numAlphas(g)})(cont95.(alphaStrCompl{numAlphas(g)}),j);
       
-        f95_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_2.(alphaStrCompl{numAlphas(g)})(cont95.(alphaStrCompl{numAlphas(g)}),j);
-        f95Norm_2.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_2.(alphaStrCompl{numAlphas(g)})(cont95.(alphaStrCompl{numAlphas(g)}),j);
+        f95_2_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_2.(alphaStrCompl{numAlphas(g)})(cont95.(alphaStrCompl{numAlphas(g)}),j);
         
-        f95_2_Leo.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = fForPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(cont95.(alphaStrCompl{numAlphas(g)}),j);
-        f95Norm_2_Leo.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(1)}) = fForPhitNormalized_2_Leo.(alphaStrCompl{numAlphas(g)})(cont95.(alphaStrCompl{numAlphas(g)}),j);
+        f95_2_Leo_REQ_100mln.(alphaStrCompl{numAlphas(g)}).(simulatorStr{numSimulators(j)}) = expectAbsFforPhit_2_Leo.(alphaStrCompl{numAlphas(g)})(cont95.(alphaStrCompl{numAlphas(g)}),j);
     end
 end
-
 
 save(stringOutput);
