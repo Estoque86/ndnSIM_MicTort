@@ -167,8 +167,8 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
   TypeId faceType = inFace->GetInstanceTypeId();
   std::string faceType_name = faceType.GetName();
 
-  if(faceType_name.compare("ns3::ndn::AppFace") == 0)
-	  m_interestEvent(interest, nodeIdString, "TX");
+  //if(faceType_name.compare("ns3::ndn::AppFace") == 0)
+	//  m_interestEvent(interest, nodeIdString, "TX");
 
   Ptr<pit::Entry> pitEntry = m_pit->Lookup (*interest);
   bool similarInterest = true;
@@ -218,7 +218,7 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
 		     //m_node = name;
 		  //}
 
-		  std::stringstream ss;
+		  /*std::stringstream ss;
 		  std::string nodeID;
 
 		  ss << "cache_" << inFace->GetNode()->GetId();
@@ -226,6 +226,7 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
 		  ss.str("");
 
 		  m_hitEvent(interest, nodeID);
+		   */
 
 		  FwHopCountTag hopCountTag;
 		  if (interest->GetPayload ()->PeekPacketTag (hopCountTag))
@@ -243,7 +244,7 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
 		  return;
 	  }
   }
-  else if(faceType_name.compare("ns3::ndn::AppFace") != 0 && m_contentStore->GetMaxSize() == 0)
+  /*else if(faceType_name.compare("ns3::ndn::AppFace") != 0 && m_contentStore->GetMaxSize() == 0)
   {
 	  //m_contentStore->ReportHit(interest, contentObject);
 	  //std::string m_node = boost::lexical_cast<std::string> (inFace->GetNode()->GetId ());
@@ -266,7 +267,8 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
   {
 	  std::cout << "Error in processing the Interest!";
 	  exit(1);
-  }
+  }*/
+
   if (similarInterest && ShouldSuppressIncomingInterest (inFace, interest, pitEntry))
     {
       pitEntry->AddIncoming (inFace/*, interest->GetInterestLifetime ()*/);
@@ -282,8 +284,8 @@ ForwardingStrategy::OnInterest (Ptr<Face> inFace,
 	  ss << inFace->GetNode()->GetId();
 	  nodeID = ss.str();
 	  ss.str("");
-	  m_dropInterests (interest, nodeID, "AGGREGATED");
-      //m_dropInterests (interest, inFace);
+	  //m_dropInterests (interest, nodeID, "AGGREGATED");
+      m_dropInterests (interest, inFace);
 
       //NS_LOG_UNCOND ("SUPPRESSED Interest: " << interest->GetName());
 
@@ -306,14 +308,14 @@ ForwardingStrategy::OnData (Ptr<Face> inFace,
   NS_LOG_FUNCTION (inFace << data->GetName ());
   m_inData (data, inFace);
 
-  std::stringstream ss;
+  /*std::stringstream ss;
   std::string nodeIdString;
 
   ss << inFace->GetNode()->GetId();
   nodeIdString = ss.str();
   ss.str("");
 
-  m_dataEvent(data, nodeIdString, "RX");
+  m_dataEvent(data, nodeIdString, "RX");*/
 
   // Lookup PIT entry
   Ptr<pit::Entry> pitEntry = m_pit->Lookup (*data);
@@ -332,14 +334,14 @@ ForwardingStrategy::OnData (Ptr<Face> inFace,
           // (unsolicited data packets should not "poison" content store)
 
           //drop dulicated or not requested data packet
-    	  std::stringstream ss;
+    	  /*std::stringstream ss;
     	  std::string nodeID;
 
     	  ss << inFace->GetNode()->GetId();
     	  nodeID = ss.str();
     	  ss.str("");
-    	  m_dropData (data, nodeID, "NOT_REQUESTED");
-          //m_dropData (data, inFace);
+    	  m_dropData (data, nodeID, "NOT_REQUESTED");*/
+          m_dropData (data, inFace);
 
         }
 
@@ -376,14 +378,14 @@ void
 ForwardingStrategy::FailedToCreatePitEntry (Ptr<Face> inFace,
                                             Ptr<const Interest> interest)
 {
-	  std::stringstream ss;
+	  /*std::stringstream ss;
 	  std::string nodeID;
 
 	  ss << inFace->GetNode()->GetId();
 	  nodeID = ss.str();
 	  ss.str("");
-	  m_dropInterests (interest, nodeID, "FAILED_PIT");
-    //m_dropInterests (interest, inFace);
+	  m_dropInterests (interest, nodeID, "FAILED_PIT");*/
+      m_dropInterests (interest, inFace);
 }
 
 void
@@ -397,14 +399,14 @@ ForwardingStrategy::DidReceiveDuplicateInterest (Ptr<Face> inFace,
   //                                                                                     //
   /////////////////////////////////////////////////////////////////////////////////////////
   pitEntry->AddIncoming (inFace);
-  std::stringstream ss;
+  /*std::stringstream ss;
   std::string nodeID;
 
   ss << inFace->GetNode()->GetId();
   nodeID = ss.str();
   ss.str("");
-  m_dropInterests (interest, nodeID, "DUPLICATE");
-  //m_dropInterests (interest, inFace);
+  m_dropInterests (interest, nodeID, "DUPLICATE");*/
+  m_dropInterests (interest, inFace);
 }
 
 void
@@ -429,14 +431,14 @@ ForwardingStrategy::DidExhaustForwardingOptions (Ptr<Face> inFace,
   NS_LOG_FUNCTION (this << boost::cref (*inFace));
   if (pitEntry->AreAllOutgoingInVain ())
     {
-	  std::stringstream ss;
+	  /*std::stringstream ss;
 	  std::string nodeID;
 
 	  ss << inFace->GetNode()->GetId();
 	  nodeID = ss.str();
 	  ss.str("");
-	  m_dropInterests (interest, nodeID, "EXHAUST_FRW_OPTIONS");
-      //m_dropInterests (interest, inFace);
+	  m_dropInterests (interest, nodeID, "EXHAUST_FRW_OPTIONS");*/
+      m_dropInterests (interest, inFace);
 
 
       // All incoming interests cannot be satisfied. Remove them
@@ -475,8 +477,8 @@ ForwardingStrategy::SatisfyPendingInterest (Ptr<Face> inFace,
                                             Ptr<const Data> data,
                                             Ptr<pit::Entry> pitEntry)
 {
-	std::stringstream ss;
-	std::string nodeIdString;
+	//std::stringstream ss;
+	//std::string nodeIdString;
 
 	//ss << inFace->GetNode()->GetId();
 
@@ -488,20 +490,20 @@ ForwardingStrategy::SatisfyPendingInterest (Ptr<Face> inFace,
     {
       bool ok = incoming.m_face->SendData (data);
 
-      ss << incoming.m_face->GetNode()->GetId();
-      nodeIdString = ss.str();
-      ss.str("");
+      //ss << incoming.m_face->GetNode()->GetId();
+      //nodeIdString = ss.str();
+      //ss.str("");
 
-      if(ok)
-    	  m_dataEvent(data, nodeIdString, "TX");
+      //if(ok)
+    	  //m_dataEvent(data, nodeIdString, "TX");
 
       DidSendOutData (inFace, incoming.m_face, data, pitEntry);
       NS_LOG_DEBUG ("Satisfy " << *incoming.m_face);
 
       if (!ok)
         {
-    	  m_dropData (data, nodeIdString, "CONGESTION");
-          //m_dropData (data, incoming.m_face);
+    	  //m_dropData (data, nodeIdString, "CONGESTION");
+          m_dropData (data, incoming.m_face);
           NS_LOG_DEBUG ("Cannot satisfy data to " << *incoming.m_face);
         }
     }
@@ -678,14 +680,14 @@ ForwardingStrategy::TrySendOutInterest (Ptr<Face> inFace,
   bool successSend = outFace->SendInterest (interest);
   if (!successSend)
     {
-	  std::stringstream ss;
+	  /*std::stringstream ss;
 	  std::string nodeID;
 
 	  ss << inFace->GetNode()->GetId();
 	  nodeID = ss.str();
 	  ss.str("");
-	  m_dropInterests (interest, nodeID, "CONGESTION");
-      //m_dropInterests (interest, outFace);
+	  m_dropInterests (interest, nodeID, "CONGESTION");*/
+      m_dropInterests (interest, outFace);
     }
 
   DidSendOutInterest (inFace, outFace, interest, pitEntry);
