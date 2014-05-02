@@ -172,9 +172,10 @@ main (int argc, char *argv[9])
     
     // Mark the remaining caches
     NodeContainer caches;
-    bool already_marked = false;
+    bool already_marked;
     for(uint32_t i=0; i<numNodes; i++)
     {
+    	already_marked = false;
     	for(uint32_t j=0; j<consumersID->size(); j++)
     	{
     		if(consumersID->operator[](j)==i)
