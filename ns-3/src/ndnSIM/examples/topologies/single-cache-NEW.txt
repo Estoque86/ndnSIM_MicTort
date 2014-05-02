@@ -17,4 +17,4 @@ producer	NA      40	20	0
 link
 
 # from	    to          capacity	metric	delay	queue
-consumer    producer	1Mbps		1       10ms    20
+consumer    producer	1Mbps		1       10ms    5

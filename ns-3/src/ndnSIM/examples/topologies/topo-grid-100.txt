@@ -147,8 +147,8 @@ link
 # metric: routing metric
 # delay:  link delay
 # queue:  MaxPackets for transmission queue on the link (both directions)
-Node0    Node1    1Mbps    1    10ms    20
-Node1    Node2    1Mbps    1    10ms    20
+Node0	Node1	1Mbps	1    10ms    20
+Node1	Node2	1Mbps    1    10ms    20
 Node2    Node3    1Mbps    1    10ms    20
 Node3    Node4    1Mbps    1    10ms    20
 Node4    Node5    1Mbps    1    10ms    20
@@ -327,5 +327,4 @@ Node59    Node69    1Mbps    1    10ms    20
 Node69    Node79    1Mbps    1    10ms    20
 Node79    Node89    1Mbps    1    10ms    20
 Node89    Node99    1Mbps    1    10ms    20
-}
 

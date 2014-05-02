@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 main=./waf
 
 SCRIPTPATH=`pwd`
@@ -11,30 +11,40 @@ infoDir=infoSim
 
 net=single_cache
 T=SINGLE_CACHE
-A=1
+#A=1
 plateau=0
 C=0.01
 M=10000
-L=4
-simDuration=25000000
-req=100000000
+#L=200
+#simDuration=5000
+req=1000000
 
-#runs=`$main -x General $1 | awk '/runs/{print $4}'`
-#echo $a
-#for ((i=0; i<(runs-1); i++))
-#let j=$runs-1
-for i in `seq 0 $runs`
+for k in 0.6
 do
-   j=`expr $i + 1`
-   #echo $i
-   #$main -u Cmdenv -f $iniFile -r $i > $resultdir/${net}/F-${F}/D-${D}/R-${R}/alpha-${a}/ccn-id-${i}.out 2>&1
-   #echo 'Time\tNode\tEvent\tContentID\t#Hops' >> $logDir/SIM\=${sim}_T\=${net}_M\=${M}_C\=${C}_L\=${L}_A\=${A}_R\=${i}.out
-  # /usr/bin/time -f "\n%E \t elapsed real time \n%U \t total CPU seconds used (user mode) \n%S \t total CPU seconds used by the system on behalf of the process \n%M \t memory (max resident set size) [kBytes] \n%x \t exit status" -o ${infoDir}/Info_SIM\=${sim}_T\=${net}_M\=${M}_C\=${C}_L\=${L}_A\=${A}_R\=${i}.txt $main -u Cmdenv -f $iniFile -r $i > $logDir/SIM\=${sim}_T\=${net}_M\=${M}_C\=${C}_L\=${L}_A\=${A}_R\=${i}-temp.out 2>&1   
-   /usr/bin/time -f "\n%E \t elapsed real time \n%U \t total CPU seconds used (user mode) \n%S \t total CPU seconds used by the system on behalf of the process \n%M \t memory (max resident set size) [kBytes] \n%x \t exit status" -o ${infoDir}/Info_SIM\=${sim}_T\=${T}_REQ\=${req}_M\=${M}_C\=${C}_L\=${L}_A\=${A}_R\=${i}.txt sudo $main --run "scratch/ndn-single-cache-cs-tracers_NEW --catalogCardinality\=${M} --numReqTot\=${req} --cacheToCatalogRatio\=${C} --lambda\=${L} --alpha\=${A} --plateau\=${plateau} --simType\=${T} --simDuration\=${simDuration} --RngSeed\=1 --RngRun\=${j}" > $logDir/stdout/SIM\=${sim}_T\=${T}_REQ\=${req}_M\=${M}_C\=${C}_L\=${L}_A\=${A}_R\=${i}.out 2>&1   
-
-  # grep 'Hit_Event' $logDir/SIM\=${sim}_T\=${T}_M\=${M}_C\=${C}_L\=${L}_A\=${A}_R\=${i}-temp.out > $logDir/SIM\=${sim}_T\=${T}_M\=${M}_C\=${C}_L\=${L}_A\=${A}_R\=${i}.out
+	for z in 25 50 75 100 
+   	do
+		let "simDuration = $req / $z"
+		#simDuration=`expr $req/$z`
+echo $simDuration
+		let "realReq = $simDuration * $z"
+echo $realReq
+     		#realReq=$simDuration*$z
+      		echo $realReq > $logDir/req_L\=${z}_A\=${k} 
+      		for i in `seq 0 $runs`
+      		do
+         		j=`expr $i + 1`
    
-  # rm $logDir/SIM\=${sim}_T\=${T}_M\=${M}_C\=${C}_L\=${L}_A\=${A}_R\=${i}-temp.out 
-done
+         		/usr/bin/time -f "\n%E \t elapsed real time \n%U \t total CPU seconds used (user mode) \n%S \t total CPU seconds used by the system on behalf of the process \n%M \t memory (max resident set size) [kBytes] \n%x \t exit status" -o ${infoDir}/Info_SIM\=${sim}_T\=${T}_REQ\=${req}_M\=${M}_C\=${C}_L\=${z}_A\=${k}_R\=${i}.txt $main --run "scratch/ndn-single-cache-cs-tracers_NEW --catalogCardinality\=${M} --numReqTot\=${req} --cacheToCatalogRatio\=${C} --lambda\=${z} --alpha\=${k} --plateau\=${plateau} --simType\=${T} --simDuration\=${simDuration} --RngSeed\=1 --RngRun\=${j}" > $logDir/stdout/SIM\=${sim}_T\=${T}_REQ\=${req}_M\=${M}_C\=${C}_L\=${z}_A\=${k}_R\=${i}.out 2>&1   
 
-#opp_runall -j4 $main -u Cmdenv -f $iniFile -r 0..$((runs-1)) > $resultdir/$net/F-$F/D-$D/R-$R/alpha-$a/
+        		# grep 'Hit_Event' $logDir/SIM\=${sim}_T\=${T}_M\=${M}_C\=${C}_L\=${L}_A\=${A}_R\=${i}-temp.out > $logDir/SIM\=${sim}_T\=${T}_M\=${M}_C\=${C}_L\=${L}_A\=${A}_R\=${i}.out
+   
+        		# rm $logDir/SIM\=${sim}_T\=${T}_M\=${M}_C\=${C}_L\=${L}_A\=${A}_R\=${i}-temp.out 
+      		done
+
+      		tar -zcvf $logDir/log_${req}_req_SIM\=${sim}_T\=${T}_M\=${M}_C\=${C}_L\=${z}_A\=${k}.tar.gz $logDir/SIM\=${sim}_T\=${T}_REQ\=${req}_M\=${M}_C\=${C}_L\=${z}_A\=${k}_R*
+      		rm $logDir/SIM\=${sim}_T\=${T}_REQ\=${req}_M\=${M}_C\=${C}_L\=${z}_A\=${k}_R*
+
+      		tar -zcvf $infoDir/Info_${req}_req_SIM\=${sim}_T\=${T}_M\=${M}_C\=${C}_L\=${z}_A\=${k}.tar.gz $infoDir/Info_SIM\=${sim}_T\=${T}_REQ\=${req}_M\=${M}_C\=${C}_L\=${z}_A\=${k}_R*
+      		rm $infoDir/Info_SIM\=${sim}_T\=${T}_REQ\=${req}_M\=${M}_C\=${C}_L\=${z}_A\=${k}_R*
+   	done
+done

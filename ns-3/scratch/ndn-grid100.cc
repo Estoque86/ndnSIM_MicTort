@@ -191,14 +191,12 @@ main (int argc, char *argv[9])
     			caches.Add(cNd);
     		}
     	}
-    }
-    
+    } 
     
     // ***********   Install CCNx stack on all nodes   **********
     ndn::StackHelper ndnHelper;
     ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
-    ndnHelper.SetContentStore ( "ns3::ndn::cs::Probability", "MaxSize", cacheSizeStr,
-    		"CacheProbability", "0.02"); // default ContentStore parameters
+    ndnHelper.SetContentStore ( "ns3::ndn::cs::Probability::Lru", "MaxSize", cacheSizeStr, "CacheProbability", "0.02"); // default ContentStore parameters
     //ndnHelper.InstallAll();
     ndnHelper.Install (caches);
     

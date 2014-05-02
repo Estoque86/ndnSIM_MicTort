@@ -1,0 +1,7 @@
+Command exited with non-zero status 1
+
+0:00.79 	 elapsed real time 
+0.68 	 total CPU seconds used (user mode) 
+0.05 	 total CPU seconds used by the system on behalf of the process 
+202608 	 memory (max resident set size) [kBytes] 
+1 	 exit status
