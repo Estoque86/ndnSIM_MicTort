@@ -201,7 +201,7 @@ main (int argc, char *argv[9])
     //ndnHelper.InstallAll();
     ndnHelper.Install (caches);
     
-    for(uint32_t i=0; i<caches.GetN(); i++)
+    /*for(uint32_t i=0; i<caches.GetN(); i++)
     {
     	uint32_t id = caches.Get(i)->GetId();
     	NS_LOG_UNCOND("CACHE:\t" << id);
@@ -218,7 +218,7 @@ main (int argc, char *argv[9])
         	uint32_t id = producers.Get(i)->GetId();
         	NS_LOG_UNCOND("PRODUCER:\t" << id);
         }
-
+*/
     ndnHelper.SetContentStore ("ns3::ndn::cs::Lru", "MaxSize", "0"); // Consumer and Producer do not cache anything
     ndnHelper.Install (consumers);
     ndnHelper.Install (producers);
