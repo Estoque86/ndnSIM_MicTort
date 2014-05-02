@@ -202,19 +202,19 @@ main (int argc, char *argv[9])
     
     for(uint32_t i=0; i<caches.GetN(); i++)
     {
-    	uint32_t id = caches.Get(i);
+    	uint32_t id = caches.Get(i)->GetId();
     	NS_LOG_UNCOND("CACHE:\t" << id);
     }
 
     for(uint32_t i=0; i<consumers.GetN(); i++)
     {
-        	uint32_t id = consumers.Get(i);
+        	uint32_t id = consumers.Get(i)->GetId();
         	NS_LOG_UNCOND("CONSUMER:\t" << id);
     }
 
     for(uint32_t i=0; i<producers.GetN(); i++)
         {
-        	uint32_t id = producers.Get(i);
+        	uint32_t id = producers.Get(i)->GetId();
         	NS_LOG_UNCOND("PRODUCER:\t" << id);
         }
 
