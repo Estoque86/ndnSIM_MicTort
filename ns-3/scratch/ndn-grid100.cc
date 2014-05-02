@@ -166,7 +166,7 @@ main (int argc, char *argv[9])
     NodeContainer consumers;
     for(uint32_t i=0; i<consumersID->size(); i++)
     {
-    	Ptr<Node> nd = topologyReader.GetNodes().Get(i);
+    	Ptr<Node> nd = topologyReader.GetNodes().Get(consumersID->operator[](i));
     	consumers.Add(nd);
     }
     
