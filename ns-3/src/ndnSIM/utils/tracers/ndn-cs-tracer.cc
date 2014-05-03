@@ -272,7 +272,7 @@ CsTracer::PrintHeader (std::ostream &os) const
 
      << "Packets" << "\t"
 
-     << "InterestIDs" << "\t"
+     //<< "InterestIDs" << "\t"
 
      << "Distances" << "\t";
 }
@@ -288,8 +288,8 @@ CsTracer::Reset ()
   << m_node << "\t"                             \
   << printName << "\t"                          \
   << m_stats.fieldName_1 << "\t"       \
-  << PrintIntNames(fieldType) << "\t"	\
   << PrintDistances(fieldType) << "\n"	;
+  //<< PrintIntNames(fieldType) << "\t"
 
 
 void
@@ -299,7 +299,7 @@ CsTracer::Print (std::ostream &os) const
 
   if(m_stats.m_cacheHits!=0)
   PRINTER ("CacheHits",   m_cacheHits, "hit");
-  //PRINTER ("CacheMisses", m_cacheMisses, "miss");
+  PRINTER ("CacheMisses", m_cacheMisses, "miss");
 }
 
 std::string
@@ -333,17 +333,25 @@ CsTracer::PrintDistances(std::string fieldType) const
 {
 	std::stringstream ss;
 	std::string output;
+	double meanDist = 0;
+	double numDist = 0;
 	if(fieldType.compare("hit")==0)
 	{
 		std::multimap<uint32_t, uint32_t>::const_iterator it = m_stats.m_intStatsHits.begin();
 		for(; it != m_stats.m_intStatsHits.end(); it++)
-		  	ss << (*it).second << ",";
+		{  	//ss << (*it).second << ",";
+			meanDist += (*it).second;
+			numDist++;
+		}
+		meanDist /= numDist;
+		ss << meanDist;
 	}
 	else if(fieldType.compare("miss")==0)
 	{
 		std::multimap<uint32_t, uint32_t>::const_iterator it = m_stats.m_intStatsMisses.begin();
-		for(; it != m_stats.m_intStatsMisses.end(); it++)
-		  	ss << (*it).second << ",";
+		//for(; it != m_stats.m_intStatsMisses.end(); it++)
+			//ss << (*it).second << ",";
+		ss << "0";
 	}
 	else
 	{

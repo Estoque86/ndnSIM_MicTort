@@ -268,7 +268,7 @@ main (int argc, char *argv[9])
     
     ndn::L3AggregateTracer::InstallAll(aggrTraceStr, Seconds(simDuration));
     ndn::CsTracer::InstallAll(csTraceStr, Seconds(simDuration));
-    ndn::AppDelayTracer::InstallAll(appTraceStr);
+    //ndn::AppDelayTracer::InstallAll(appTraceStr);
 
 
     Simulator::Stop (Seconds (simDuration));
