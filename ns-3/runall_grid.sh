@@ -4,7 +4,7 @@ main=./waf
 SCRIPTPATH=`pwd`
 sim="NDNSIM"
 
-runs=1
+runs=0
 logDir=logs
 infoDir=infoSim
 #net=`grep 'net=' $iniFile | awk '{print $3}' | awk -F '=' '{print $2}' | awk -F '}' '{print $1}'`
