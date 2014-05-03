@@ -291,7 +291,7 @@ L3AggregateTracer::Print (std::ostream &os) const
       if (!stats->first)
         continue;
 
-      PRINTER ("InInterests",   m_inInterests);
+      //PRINTER ("InInterests",   m_inInterests);
       PRINTER ("OutInterests",  m_outInterests);
       //PRINTER ("DropInterests", m_dropInterests);
 
@@ -300,7 +300,7 @@ L3AggregateTracer::Print (std::ostream &os) const
       //PRINTER ("DropNacks", m_dropNacks);
 
       PRINTER ("InData",   m_inData);
-      PRINTER ("OutData",  m_outData);
+      //PRINTER ("OutData",  m_outData);
       //PRINTER ("DropData", m_dropData);
     }
 
@@ -308,7 +308,7 @@ L3AggregateTracer::Print (std::ostream &os) const
     std::map<Ptr<const Face>, boost::tuple<Stats, Stats> >::iterator stats = m_stats.find (Ptr<const Face> (0));
     if (stats != m_stats.end ())
       {
-        PRINTER ("SatisfiedInterests", m_satisfiedInterests);
+        //PRINTER ("SatisfiedInterests", m_satisfiedInterests);
         //PRINTER ("TimedOutInterests", m_timedOutInterests);
       }
   }

@@ -215,7 +215,8 @@ ContentStoreImpl<Policy>::Lookup (Ptr<const Interest> interest)
     }
   else
     {
-      this->m_cacheMissesTrace (interest);
+	  if(this->getPolicy ().get_max_size ()!=0);
+      	  this->m_cacheMissesTrace (interest);
       return 0;
     }
 }
