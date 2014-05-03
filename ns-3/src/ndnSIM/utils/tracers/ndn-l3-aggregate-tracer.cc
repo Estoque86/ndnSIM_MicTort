@@ -299,8 +299,8 @@ L3AggregateTracer::Print (std::ostream &os) const
       //PRINTER ("OutNacks",  m_outNacks);
       //PRINTER ("DropNacks", m_dropNacks);
 
-      PRINTER ("InData",   m_inData);
-      //PRINTER ("OutData",  m_outData);
+      //PRINTER ("InData",   m_inData);
+      PRINTER ("OutData",  m_outData);
       //PRINTER ("DropData", m_dropData);
     }
 
